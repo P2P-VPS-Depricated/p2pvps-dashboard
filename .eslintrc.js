@@ -30,6 +30,11 @@ module.exports = {
     'no-extra-semi': 0,
     'new-cap': 0,
     'semi': 0,
-    'no-throw-literal': 0
+    'no-throw-literal': 0,
+    'curly': 0,
+    'spaced-comment': 0,
+    'indent': 0,
+    'keyword-spacing': 0,
+    'no-unused-vars': 0
   }
 }

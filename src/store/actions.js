@@ -11,12 +11,12 @@ export default {
   // Get the user ID (GUID). Will present a modal to the user if they are not logged in, but
   // they should never see that.
   getId (context) {
-    $.get('/api/getUserId', '', function (data) {
-      context.commit('SET_USER_ID', data.userId)
-    })
+    //$.get('/api/getUserId', '', function (data) {
+    //  context.commit('SET_USER_ID', data.userId)
+    //})
     // If the user is not logged in, reflect it in the Vuex state.
-    .fail(function (jqxhr, textStatus, error) {
-      if (jqxhr.responseJSON.detail === 'Could not retrieve user ID. You must be logged in to use this API.') {
+    //.fail(function (jqxhr, textStatus, error) {
+      //if (jqxhr.responseJSON.detail === 'Could not retrieve user ID. You must be logged in to use this API.') {
         context.commit('SET_USER_ID', 'Not Logged In')
 
         // Display a modal to the user
@@ -33,8 +33,8 @@ export default {
           showLoginForm: true
         }
         context.commit('UPDATE_MODAL', modal)
-      }
-    })
+      //}
+    //})
   },
 
   // getDeviceData retrieves device data from the server and populates the Vuex store

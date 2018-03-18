@@ -23,8 +23,13 @@ export default {
     state.rentedDevices = newRentedDevicesState
   },
 
-  SET_USER_ID (state, userId) {
-    state.userInfo.GUID = userId
+  SET_USER_ID (state, userData) {
+    if(userData === 'Not Logged In')
+      state.userInfo.GUID = 'Not Logged In'
+    else {
+      state.userInfo.GUID = userData.user._id.toString()
+      state.userInfo.token = userData.token
+    }
   },
 
   UPDATE_MODAL (state, newModalData) {

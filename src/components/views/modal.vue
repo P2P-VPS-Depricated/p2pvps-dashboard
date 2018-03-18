@@ -60,7 +60,7 @@
 
       // Allows the user to log into the system
       login: function () {
-        // debugger
+        console.log('login button clicked')
 
         // Validation
         if ((this.loginEmail === '') || (this.loginPassword === '')) {
@@ -68,19 +68,21 @@
         }
 
         var obj = {
-          email: this.loginEmail,
+          username: this.loginEmail,
           password: this.loginPassword
         }
 
-        $.post('/keystone/api/session/signin', obj, (data) => {
+        $.post('/api/auth/', obj, (data) => {
+          debugger
           // Error handling/validation
-          if (!data.success) {
-            console.log('Error calling /keystone/api/session/signin')
+          if (!data.token) {
+            console.log('Error calling /auth')
             return
           }
 
           // Get User info.
-          this.$store.dispatch('getId')
+          //this.$store.dispatch('getId')
+          this.$store.commit('SET_USER_ID', data)
 
           // Dismiss the modal
           var modal = {
@@ -99,7 +101,7 @@
         })
         // If sending the data to the server fails:
         .fail((jqxhr, textStatus, error) => {
-          // debugger
+          debugger
 
           if (error === 'Unauthorized') {
             // Display a modal to the user

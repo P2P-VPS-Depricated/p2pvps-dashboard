@@ -304,10 +304,14 @@
 
     mounted: function () {
       // Retrieve the GUID for the currently logged in user
-      this.$store.dispatch('getId')
+      const guid = this.$store.state.userInfo.GUID
+      console.log(`guid: ${guid}`)
+
+      if(guid === '' || guid === 'Not Logged In')
+        this.$store.dispatch('getId')
 
       // var globalThis = this // Save context for this.
-
+/*
       // Start a timer to check when the users GUID has been retrieved. Once it has,
       // it indicates that the user is logged in. Only after login has been verified,
       // should the other API calls be made.
@@ -329,8 +333,8 @@
           }, 120000)
         }
       }, 1000)
+      */
     }
-
   }
 </script>
 

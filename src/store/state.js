@@ -8,7 +8,8 @@ export default {
     messages: [{1: 'test', 2: 'test'}],
     notifications: [],
     tasks: [],
-    GUID: ''
+    GUID: '',
+    token: ''
   },
   menuState: {
     dashboard: true,
