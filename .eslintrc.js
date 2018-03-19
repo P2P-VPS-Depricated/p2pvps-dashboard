@@ -35,6 +35,7 @@ module.exports = {
     'spaced-comment': 0,
     'indent': 0,
     'keyword-spacing': 0,
-    'no-unused-vars': 0
+    'no-unused-vars': 0,
+    'space-before-function-paren': 0
   }
 }

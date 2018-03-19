@@ -10,7 +10,7 @@
           <button v-on:click="showForm = !showForm" type="button" class="btn btn-success" id="addNewDeviceBtn" style="margin-top: 10px; margin-bottom: 20px;">+ Add New Device</button>
         </div>
       </div>
-      
+
       <transition name="fade">
         <div v-if="showForm" class="row addNewDeviceForm">
           <div class="col-sm-12">
@@ -29,7 +29,7 @@
           </div>
         </div>
       </transition>
-      
+
     </div>
 
   </section>
@@ -37,7 +37,7 @@
 
 <script>
   import deviceListingItem from './ownedDevicesComponents/deviceListingItem.vue'
-  
+
   export default {
     name: 'ownedDevices',
     data () {
@@ -59,26 +59,37 @@
     },
 
     methods: {
-      addDevice: function () {
+      addDevice: async function () {
         // debugger
+        try {
+          // Maintain scope inside the callback functions
+          var ownerId = this.$store.state.userInfo.GUID
+          var token = this.$store.state.userInfo.token
+          var thisStore = this.$store
 
-        // Maintain scope inside the callback functions
-        var ownerId = this.$store.state.userInfo.GUID
-        var thisStore = this.$store
+          // Error Handling
+          if ((this.deviceName === '') || (this.deviceDesc === '')) {
+            console.log('Launch modal.')
+            return
+          }
 
-        // Error Handling
-        if ((this.deviceName === '') || (this.deviceDesc === '')) {
-          console.log('Launch modal.')
-          return
+          // Register a new public device model on the server.
+          // (This will also create a private model)
+          var deviceModel = {
+            ownerUser: ownerId,
+            deviceName: this.deviceName,
+            deviceDesc: this.deviceDesc
+          }
+          var device = await createDevice(token, deviceModel)
+
+          // Update the Vues store with device info.
+          //thisStore.dispatch('getDeviceData')
+        } catch(err) {
+          console.error(`Error in ownedDevices.vue/addDevice(): `, err)
         }
 
-        // Register a new public device model on the server.
-        var deviceModel = {
-          ownerUser: ownerId,
-          deviceName: this.deviceName,
-          deviceDesc: this.deviceDesc
-        }
-        $.post('/api/devicePublicData/create', deviceModel, function (data) {
+        /*
+        $.post('/api/devices', deviceModel, function (data) {
           // debugger
           var newPublicModel = data.collection
 
@@ -112,13 +123,42 @@
         .fail(function (jqxhr, textStatus, error) {
           console.error('API call to /api/devicePublicData/create unsuccessful. Error: ' + jqxhr.responseJSON.detail)
         })
-
+        */
         // Hide the form
         this.showForm = false
         this.deviceName = ''
         this.deviceDesc = ''
       }
     }
+  }
+
+  // Creates a new device model.
+  function createDevice(token, deviceData) {
+    return new Promise(function(resolve, reject) {
+      $.ajax({
+        type: 'POST',
+        url: '/api/devices',
+        data: {
+          device: deviceData
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        success: handleSuccess,
+        dataType: 'json',
+        error: handleError
+      })
+
+      function handleSuccess(data, textStatus, jqXHR) {
+        debugger
+        resolve(data.device)
+      }
+
+      function handleError(err) {
+        debugger
+        reject(err)
+      }
+    })
   }
 </script>
 

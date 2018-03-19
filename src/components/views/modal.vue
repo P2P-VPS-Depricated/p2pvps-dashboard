@@ -73,7 +73,7 @@
         }
 
         $.post('/api/auth/', obj, (data) => {
-          debugger
+          //debugger
           // Error handling/validation
           if (!data.token) {
             console.log('Error calling /auth')
