@@ -83,7 +83,7 @@
           var device = await createDevice(token, deviceModel)
 
           // Update the Vues store with device info.
-          //thisStore.dispatch('getDeviceData')
+          thisStore.dispatch('getDeviceData')
         } catch(err) {
           console.error(`Error in ownedDevices.vue/addDevice(): `, err)
         }
@@ -150,7 +150,7 @@
       })
 
       function handleSuccess(data, textStatus, jqXHR) {
-        debugger
+        //debugger
         resolve(data.device)
       }
 

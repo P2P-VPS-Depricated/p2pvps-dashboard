@@ -11,39 +11,53 @@ export default {
   // Get the user ID (GUID). Will present a modal to the user if they are not logged in, but
   // they should never see that.
   getId (context) {
-    //$.get('/api/getUserId', '', function (data) {
+    // $.get('/api/getUserId', '', function (data) {
     //  context.commit('SET_USER_ID', data.userId)
-    //})
+    // })
     // If the user is not logged in, reflect it in the Vuex state.
-    //.fail(function (jqxhr, textStatus, error) {
-      //if (jqxhr.responseJSON.detail === 'Could not retrieve user ID. You must be logged in to use this API.') {
-        context.commit('SET_USER_ID', 'Not Logged In')
+    // .fail(function (jqxhr, textStatus, error) {
+      // if (jqxhr.responseJSON.detail === 'Could not retrieve user ID. You must be logged in to use this API.') {
+    context.commit('SET_USER_ID', 'Not Logged In')
 
         // Display a modal to the user
-        var modal = {
-          show: true,
-          title: 'Please log in',
-          body: 'You are not logged in. Please log in below:',
-          button1Text: 'Close',
-          button1Func: function () { $('.appModal').modal('hide') },
-          button1Show: true,
-          button2Text: '',
-          button2Func: null,
-          button2Show: false,
-          showLoginForm: true
-        }
-        context.commit('UPDATE_MODAL', modal)
-      //}
-    //})
+    var modal = {
+      show: true,
+      title: 'Please log in',
+      body: 'You are not logged in. Please log in below:',
+      button1Text: 'Close',
+      button1Func: function () { $('.appModal').modal('hide') },
+      button1Show: true,
+      button2Text: '',
+      button2Func: null,
+      button2Show: false,
+      showLoginForm: true
+    }
+    context.commit('UPDATE_MODAL', modal)
+      // }
+    // })
   },
 
   // getDeviceData retrieves device data from the server and populates the Vuex store
   // with the data.
-  getDeviceData (context) {
-    var ownedDevices = []
+  async getDeviceData (context) {
+    let ownedDevices = []
 
+    // Get the devices owned by the current user.
+    ownedDevices = await getDevicesById(context)
+
+    //for (var i = 0; i < ownedDevices.length; i++) {
+    //  if (ownedDevices[i].obContract) {
+        // Get obContract data for this device.
+    //  }
+    //}
+
+    context.commit('SET_OWNED_DEVICES', ownedDevices)
+
+    debugger
+
+/*
     // Get *public* device data associated with this user.
-    $.get('/api/devicePublicData/listById', '', function (publicData) {
+    $.get(`/api/device/listbyid/${abc}`, '', function (publicData) {
       var devicePublicData = publicData.collection
 
       // Get the matching *private* device data.
@@ -116,6 +130,7 @@ export default {
         }
       }
     })
+    */
   },
 
   // This function deletes a devicePublicModel and devicePrivate model from the server.
@@ -189,4 +204,32 @@ export default {
       throw error
     })
   }
+}
+
+// Call the /device/listbyid/:id API.
+async function getDevicesById(context) {
+  return new Promise(function(resolve, reject) {
+    const token = context.state.userInfo.token
+
+    $.ajax({
+      type: 'GET',
+      url: `/api/devices/listbyid`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      success: handleSuccess,
+      dataType: 'json',
+      error: handleError
+    })
+
+    function handleSuccess(data, textStatus, jqXHR) {
+      //debugger
+      resolve(data.devices)
+    }
+
+    function handleError(err) {
+      debugger
+      reject(err)
+    }
+  })
 }
