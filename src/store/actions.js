@@ -223,7 +223,7 @@ async function getDevicesById(context) {
     })
 
     function handleSuccess(data, textStatus, jqXHR) {
-      //debugger
+      debugger
       resolve(data.devices)
     }
 

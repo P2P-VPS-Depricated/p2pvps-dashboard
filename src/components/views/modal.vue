@@ -84,6 +84,15 @@
           //this.$store.dispatch('getId')
           this.$store.commit('SET_USER_ID', data)
 
+          // Request device information right away.
+          this.$store.dispatch('getDeviceData')
+
+          // Also set up an interval timer to refresh device info
+          this.deviceUpdateTimer = setInterval(() => {
+            this.$store.dispatch('getDeviceData')
+            console.log('Device data updated')
+          }, 120000)
+
           // Dismiss the modal
           var modal = {
             show: false,
