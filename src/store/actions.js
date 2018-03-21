@@ -53,7 +53,7 @@ export default {
 
     context.commit('SET_OWNED_DEVICES', ownedDevices)
 
-    debugger
+    //debugger
 
 /*
     // Get *public* device data associated with this user.
@@ -223,7 +223,7 @@ async function getDevicesById(context) {
     })
 
     function handleSuccess(data, textStatus, jqXHR) {
-      debugger
+      //debugger
       resolve(data.devices)
     }
 
