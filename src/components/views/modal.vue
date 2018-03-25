@@ -73,7 +73,7 @@
           }
         }
 
-        $.post('/api/users/', obj, (data) => {
+        $.post('/users/', obj, (data) => {
           debugger
           // Error handling/validation
           if (!data.token) {
@@ -164,7 +164,7 @@
           password: this.loginPassword
         }
 
-        $.post('/api/auth/', obj, (data) => {
+        $.post('/auth/', obj, (data) => {
           //debugger
           // Error handling/validation
           if (!data.token) {
