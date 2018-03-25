@@ -30,7 +30,7 @@ module.exports = {
     proxyTable: {
       // proxy all requests to the dev server
       '/api': {
-        target: 'http://p2pvps.net',
+        target: 'http://p2pvps.net:3001',
         //target: 'http://localhost:5000',
         changeOrigin: true,
         pathRewrite: {
@@ -38,7 +38,7 @@ module.exports = {
         }
       },
       '/keystone': {
-        target: 'http://p2pvps.net',
+        target: 'http://p2pvps.net:3001',
         //target: 'http://localhost',
         changeOrigin: true,
         pathRewrite: {
