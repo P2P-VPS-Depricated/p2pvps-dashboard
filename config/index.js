@@ -10,7 +10,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'http://p2pvps.net:3001',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'
