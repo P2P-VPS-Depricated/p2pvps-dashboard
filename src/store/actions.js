@@ -150,7 +150,7 @@ export default {
     // debugger
 
     // Delete the public data model
-    $.get('/api/devicePublicData/' + deviceId + '/remove', '', function (data) {
+    $.get('/devicePublicData/' + deviceId + '/remove', '', function (data) {
       // debugger
 
       // Error handling
@@ -167,7 +167,7 @@ export default {
       }
     })
     .fail(function (jqxhr, textStatus, error) {
-      console.error('API call to /api/devicePublicData/' + deviceId + '/remove unsuccessful. Error: ' + jqxhr.responseJSON.detail)
+      console.error('API call to /devicePublicData/' + deviceId + '/remove unsuccessful. Error: ' + jqxhr.responseJSON.detail)
     })
   },
 
@@ -205,13 +205,13 @@ export default {
     // JSON.stringify(tmpModel, null, 2)
 
     // Upload the data to the server.
-    $.post('/api/devicePublicData/' + devicePublicModel._id + '/update', tmpModel, function (publicData) {
+    $.post('/devicePublicData/' + devicePublicModel._id + '/update', tmpModel, function (publicData) {
       // debugger
       console.log(`devicePublidModel ${publicData.collection._id} updated.`)
     })
     .fail(function (jqxhr, textStatus, error) {
       // debugger
-      console.error('API call to /api/devicePublicData/' + devicePublicModel._id + '/update unsuccessful. Error: ' + jqxhr.responseJSON.detail, error)
+      console.error('API call to /devicePublicData/' + devicePublicModel._id + '/update unsuccessful. Error: ' + jqxhr.responseJSON.detail, error)
       throw error
     })
   }
@@ -224,7 +224,7 @@ async function getDevicesById(context) {
 
     $.ajax({
       type: 'GET',
-      url: `/api/devices/listbyid`,
+      url: `/devices/listbyid`,
       headers: {
         Authorization: `Bearer ${token}`
       },
