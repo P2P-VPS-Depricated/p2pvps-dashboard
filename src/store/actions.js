@@ -8,24 +8,37 @@
 
 export default {
 
-  // Get the user ID (GUID). Will present a modal to the user if they are not logged in, but
-  // they should never see that.
+  // Present a modal to user to create an account.
+  createAccount (context) {
+    // Display a modal to the user
+    var modal = {
+      show: true,
+      title: 'Create Account',
+      body: 'Use the form below to create a new account.',
+      button1Text: '',
+      button1Func: null,
+      button1Show: false,
+      button2Text: '',
+      button2Func: null,
+      button2Show: false,
+      showLoginForm: true
+    }
+    context.commit('UPDATE_MODAL', modal)
+  },
+
+  // Get the user ID (GUID). Will present a modal to the user if they are not logged in.
   getId (context) {
-    // $.get('/api/getUserId', '', function (data) {
-    //  context.commit('SET_USER_ID', data.userId)
-    // })
-    // If the user is not logged in, reflect it in the Vuex state.
-    // .fail(function (jqxhr, textStatus, error) {
-      // if (jqxhr.responseJSON.detail === 'Could not retrieve user ID. You must be logged in to use this API.') {
     context.commit('SET_USER_ID', 'Not Logged In')
 
-        // Display a modal to the user
+    // Display a modal to the user
     var modal = {
       show: true,
       title: 'Please log in',
       body: 'You are not logged in. Please log in below:',
-      button1Text: 'Close',
-      button1Func: function () { $('.appModal').modal('hide') },
+      //button1Text: 'Close',
+      //button1Func: function () { $('.appModal').modal('hide') },
+      button1Text: '',
+      button1Func: null,
       button1Show: true,
       button2Text: '',
       button2Func: null,
@@ -33,8 +46,6 @@ export default {
       showLoginForm: true
     }
     context.commit('UPDATE_MODAL', modal)
-      // }
-    // })
   },
 
   // getDeviceData retrieves device data from the server and populates the Vuex store

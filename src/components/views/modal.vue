@@ -58,9 +58,101 @@
         }
       },
 
+      createAccount: function() {
+        console.log(`createAccount() executed`)
+
+        // Validation
+        if ((this.loginEmail === '') || (this.loginPassword === '')) {
+          return
+        }
+
+        var obj = {
+          user: {
+            username: this.loginEmail,
+            password: this.loginPassword
+          }
+        }
+
+        $.post('/api/users/', obj, (data) => {
+          debugger
+          // Error handling/validation
+          if (!data.token) {
+            console.log('Error calling /users')
+            return
+          }
+
+          // Get User info.
+          //this.$store.dispatch('getId')
+          this.$store.commit('SET_USER_ID', data)
+
+          // Request device information right away.
+          //this.$store.dispatch('getDeviceData')
+
+          // Also set up an interval timer to refresh device info
+          this.deviceUpdateTimer = setInterval(() => {
+            this.$store.dispatch('getDeviceData')
+            console.log('Device data updated')
+          }, 120000)
+
+          // Dismiss the modal
+          // TODO I think this object could be reduced.
+          var modal = {
+            show: false,
+            //title: 'Please log in',
+            //body: 'Loggin failed. Please try again',
+            //button1Text: 'Close',
+            //button1Func: function () { $('.appModal').modal('hide') },
+            //button1Text: '',
+            //button1Func: null,
+            //button1Show: true,
+            //button2Text: '',
+            //button2Func: null,
+            //button2Show: false,
+            showLoginForm: false
+          }
+          this.$store.commit('UPDATE_MODAL', modal)
+        })
+        // If sending the data to the server fails:
+        .fail((jqxhr, textStatus, error) => {
+          //debugger
+          const globalThis = this
+
+          if (error === 'Unauthorized') {
+            // Display a modal to the user
+            var modal = {
+              show: true,
+              title: 'Create Account',
+              body: '--> Account creation FAILED <-- Please try again',
+              button1Text: 'Create Account',
+              //button1Func: function () { this.$store.dispatch('createAccount') },
+              button1Func: function () { globalThis.$store.dispatch('createAccount') },
+              button1Show: true,
+              button2Text: '',
+              button2Func: null,
+              button2Show: false,
+              showLoginForm: true
+            }
+            this.$store.commit('UPDATE_MODAL', modal)
+          } else {
+            // var err = textStatus + ', ' + error
+
+            //global.modalView.errorModal('Request failed because of: ' + error + '. Error Message: ' + jqxhr.responseText)
+            console.log('Request Failed: ' + error)
+            console.error('Error message: ' + jqxhr.responseText)
+          }
+        })
+      },
+
       // Allows the user to log into the system
       login: function () {
         console.log('login button clicked')
+        //debugger
+
+        // Catch the create-account modal.
+        if(this.$store.state.modal.title === 'Create Account') {
+          this.createAccount()
+          return
+        }
 
         // Validation
         if ((this.loginEmail === '') || (this.loginPassword === '')) {
@@ -94,12 +186,15 @@
           }, 120000)
 
           // Dismiss the modal
+          // TODO I think this object could be reduced.
           var modal = {
             show: false,
             title: 'Please log in',
             body: 'Loggin failed. Please try again',
-            button1Text: 'Close',
-            button1Func: function () { $('.appModal').modal('hide') },
+            //button1Text: 'Close',
+            //button1Func: function () { $('.appModal').modal('hide') },
+            button1Text: '',
+            button1Func: null,
             button1Show: true,
             button2Text: '',
             button2Func: null,
@@ -110,7 +205,8 @@
         })
         // If sending the data to the server fails:
         .fail((jqxhr, textStatus, error) => {
-          debugger
+          //debugger
+          const globalThis = this
 
           if (error === 'Unauthorized') {
             // Display a modal to the user
@@ -118,8 +214,9 @@
               show: true,
               title: 'Login failed, please try again.',
               body: '--> LOGIN FAILED <-- Please try again',
-              button1Text: 'Close',
-              button1Func: function () { $('.appModal').modal('hide') },
+              button1Text: 'Create Account',
+              //button1Func: function () { this.$store.dispatch('createAccount') },
+              button1Func: function () { globalThis.$store.dispatch('createAccount') },
               button1Show: true,
               button2Text: '',
               button2Func: null,
@@ -130,7 +227,7 @@
           } else {
             // var err = textStatus + ', ' + error
 
-            global.modalView.errorModal('Request failed because of: ' + error + '. Error Message: ' + jqxhr.responseText)
+            //global.modalView.errorModal('Request failed because of: ' + error + '. Error Message: ' + jqxhr.responseText)
             console.log('Request Failed: ' + error)
             console.error('Error message: ' + jqxhr.responseText)
           }
