@@ -150,7 +150,7 @@ export default {
     // debugger
 
     // Delete the public data model
-    $.get('/devicePublicData/' + deviceId + '/remove', '', function (data) {
+    $.get('/api/devicePublicData/' + deviceId + '/remove', '', function (data) {
       // debugger
 
       // Error handling
@@ -205,7 +205,7 @@ export default {
     // JSON.stringify(tmpModel, null, 2)
 
     // Upload the data to the server.
-    $.post('/devicePublicData/' + devicePublicModel._id + '/update', tmpModel, function (publicData) {
+    $.post('/api/devicePublicData/' + devicePublicModel._id + '/update', tmpModel, function (publicData) {
       // debugger
       console.log(`devicePublidModel ${publicData.collection._id} updated.`)
     })
@@ -224,7 +224,7 @@ async function getDevicesById(context) {
 
     $.ajax({
       type: 'GET',
-      url: `/devices/listbyid`,
+      url: `/api/devices/listbyid`,
       headers: {
         Authorization: `Bearer ${token}`
       },
