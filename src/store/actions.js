@@ -167,7 +167,7 @@ export default {
       }
     })
     .fail(function (jqxhr, textStatus, error) {
-      console.error('API call to /api/devicePublicData/' + deviceId + '/remove unsuccessful. Error: ' + jqxhr.responseJSON.detail)
+      console.error('API call to /devicePublicData/' + deviceId + '/remove unsuccessful. Error: ' + jqxhr.responseJSON.detail)
     })
   },
 
@@ -211,7 +211,7 @@ export default {
     })
     .fail(function (jqxhr, textStatus, error) {
       // debugger
-      console.error('API call to /api/devicePublicData/' + devicePublicModel._id + '/update unsuccessful. Error: ' + jqxhr.responseJSON.detail, error)
+      console.error('API call to /devicePublicData/' + devicePublicModel._id + '/update unsuccessful. Error: ' + jqxhr.responseJSON.detail, error)
       throw error
     })
   }

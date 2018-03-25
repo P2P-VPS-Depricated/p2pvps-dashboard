@@ -28,23 +28,33 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // proxy all requests to the dev server
+
       '/api': {
         target: 'http://p2pvps.net:3001',
         //target: 'http://localhost:5000',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': ''
-        }
-      },
-      '/keystone': {
-        target: 'http://p2pvps.net:3001',
-        //target: 'http://localhost',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/': ''
+          '^/api': '/api'
         }
       }
+
+      // proxy all requests to the dev server
+      //'/api': {
+      //  target: 'http://p2pvps.net:3001',
+        //target: 'http://localhost:5000',
+      //  changeOrigin: true,
+      //  pathRewrite: {
+      //    '^/api': ''
+      //  }
+      //},
+      //'/keystone': {
+      //  target: 'http://p2pvps.net:3001',
+        //target: 'http://localhost',
+      //  changeOrigin: true,
+      //  pathRewrite: {
+      //    '^/': ''
+      //  }
+      //}
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
